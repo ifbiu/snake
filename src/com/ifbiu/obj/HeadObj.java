@@ -95,7 +95,11 @@ public class HeadObj extends GameObj{
     @Override
     public void paintSelf(Graphics g) {
         super.paintSelf(g);
-        move();
+        try {
+            move();
+        }catch (IndexOutOfBoundsException e){
+            return;
+        }
         // 越界处理
         if (x < 0){
             x = 570;
