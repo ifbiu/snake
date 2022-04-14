@@ -1,6 +1,7 @@
 package com.ifbiu;
 
 import com.ifbiu.obj.BodyObj;
+import com.ifbiu.obj.FoodObj;
 import com.ifbiu.obj.HeadObj;
 import com.ifbiu.utils.GameUtils;
 
@@ -20,6 +21,9 @@ public class GameWin extends JFrame {
 
     // 蛇身体集合
     public List<BodyObj> bodyObjList = new ArrayList<>();
+
+    // 食物
+    public FoodObj foodObj = new FoodObj().getFood();
 
     public void launch(){
         // 设置窗口可见
@@ -49,7 +53,7 @@ public class GameWin extends JFrame {
     @Override
     public void paint(Graphics g) {
         // 灰色背景
-        g.setColor(Color.pink);
+        g.setColor(Color.white);
         g.fillRect(0,0,600,600);
         // 网格线
         g.setColor(Color.black);
@@ -69,6 +73,8 @@ public class GameWin extends JFrame {
 
         // 绘制蛇头
         headObj.paintSelf(g);
+
+        foodObj.paintSelf(g);
     }
 
     public static void main(String[] args) {

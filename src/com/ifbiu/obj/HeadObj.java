@@ -95,11 +95,31 @@ public class HeadObj extends GameObj{
     @Override
     public void paintSelf(Graphics g) {
         super.paintSelf(g);
+
+        // 食物
+        FoodObj food = this.frame.foodObj;
+
+        // 身体最后一节的坐标
+        Integer newX = null;
+        Integer newY = null;
+        if (this.x == food.x && this.y == food.y){
+            this.frame.foodObj = food.getFood();
+            // 获取蛇身的最后一个元素
+            BodyObj lastBody = this.frame.bodyObjList.get(this.frame.bodyObjList.size() - 1);
+            newX = lastBody.x;
+            newY = lastBody.y;
+        }
+
         try {
             move();
         }catch (IndexOutOfBoundsException e){
             return;
         }
+
+        if (newX != null && newY != null){
+            this.frame.bodyObjList.add(new BodyObj(GameUtils.bodyImg,newX,newY,this.frame));
+        }
+
         // 越界处理
         if (x < 0){
             x = 570;
