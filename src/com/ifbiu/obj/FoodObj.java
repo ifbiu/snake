@@ -11,9 +11,9 @@ import java.util.Random;
  * @ClassName FoodObj
  * @createTime 2022年04月14日 08:12:00
  */
-public class FoodObj extends GameObj{
+public class FoodObj extends GameObj {
 
-    // 随机
+    //随机
     Random r = new Random();
 
     public FoodObj() {
@@ -24,9 +24,9 @@ public class FoodObj extends GameObj{
         super(img, x, y, frame);
     }
 
-    // 获取食物
+    //获取食物
     public FoodObj getFood(){
-        return new FoodObj(GameUtils.foodImg,r.nextInt(20) * 30,(r.nextInt(19)+1)*30,this.frame);
+        return new FoodObj(GameUtils.foodImg,r.nextInt(20) * 30,(r.nextInt(19) + 1) * 30,this.frame);
     }
 
     @Override

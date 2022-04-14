@@ -9,7 +9,7 @@ import java.awt.*;
  * @ClassName BodyObj
  * @createTime 2022年04月13日 16:51:00
  */
-public class BodyObj extends GameObj{
+public class BodyObj extends GameObj {
     public BodyObj(Image img, int x, int y, GameWin frame) {
         super(img, x, y, frame);
     }
@@ -17,5 +17,14 @@ public class BodyObj extends GameObj{
     @Override
     public void paintSelf(Graphics g) {
         super.paintSelf(g);
+    }
+
+    @Override
+    public String toString() {
+        return "BodyObj{" +
+                "img=" + img +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
     }
 }

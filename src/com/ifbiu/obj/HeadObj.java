@@ -12,7 +12,8 @@ import java.awt.event.KeyEvent;
  * @ClassName HeadObj
  * @createTime 2022年04月13日 08:01:00
  */
-public class HeadObj extends GameObj{
+public class HeadObj extends GameObj {
+    //方向 up down left right
     private String direction = "right";
 
     public String getDirection() {
@@ -25,7 +26,7 @@ public class HeadObj extends GameObj{
 
     public HeadObj(Image img, int x, int y, GameWin frame) {
         super(img, x, y, frame);
-        // 键盘监听事件
+        //键盘监听事件
         this.frame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -34,7 +35,7 @@ public class HeadObj extends GameObj{
         });
     }
 
-    // 控制移动方向
+    //控制移动方向  w -up  a - left   d -right  s-down
     public void changeDirection(KeyEvent e){
         switch (e.getKeyCode()){
             case KeyEvent.VK_A:
@@ -66,16 +67,22 @@ public class HeadObj extends GameObj{
         }
     }
 
+    //蛇的移动
     public void move(){
-        // 蛇身体的移动
+        //蛇身体的移动
         java.util.List<BodyObj> bodyObjList = this.frame.bodyObjList;
         for (int i = bodyObjList.size() - 1; i >= 1; i--) {
-            bodyObjList.get(i).x = bodyObjList.get(i-1).x;
-            bodyObjList.get(i).y = bodyObjList.get(i-1).y;
+            bodyObjList.get(i).x = bodyObjList.get(i - 1).x;
+            bodyObjList.get(i).y = bodyObjList.get(i - 1).y;
+            //蛇头与身体的碰撞判断
+            if (this.x == bodyObjList.get(i).x && this.y == bodyObjList.get(i).y){
+                //失败
+                GameWin.state = 3;
+            }
         }
         bodyObjList.get(0).x = this.x;
         bodyObjList.get(0).y = this.y;
-        // 蛇头的移动
+        //蛇头的移动
         switch (direction){
             case "up":
                 y -= height;
@@ -84,10 +91,11 @@ public class HeadObj extends GameObj{
                 y += height;
                 break;
             case "left":
-                x-= width;
+                x -= width;
                 break;
             case "right":
                 x += width;
+            default:
                 break;
         }
     }
@@ -95,40 +103,51 @@ public class HeadObj extends GameObj{
     @Override
     public void paintSelf(Graphics g) {
         super.paintSelf(g);
-
-        // 食物
+        //蛇吃食物
         FoodObj food = this.frame.foodObj;
-
-        // 身体最后一节的坐标
+        //身体最后一节的坐标
         Integer newX = null;
         Integer newY = null;
         if (this.x == food.x && this.y == food.y){
             this.frame.foodObj = food.getFood();
-            // 获取蛇身的最后一个元素
+            //获取蛇身的最后一个元素
             BodyObj lastBody = this.frame.bodyObjList.get(this.frame.bodyObjList.size() - 1);
             newX = lastBody.x;
             newY = lastBody.y;
+            //分数+1
+            this.frame.score++;
         }
-
-        try {
-            move();
-        }catch (IndexOutOfBoundsException e){
-            return;
+        //通关判断
+        if (this.frame.score >= 3){
+            //通关
+            GameWin.state = 4;
         }
-
+        move();
+        //move结束后,新的bodyObj对象添加到bodyObjList
         if (newX != null && newY != null){
             this.frame.bodyObjList.add(new BodyObj(GameUtils.bodyImg,newX,newY,this.frame));
         }
 
-        // 越界处理
+
+
+        //越界处理
         if (x < 0){
             x = 570;
-        }else if (x > 570){
+        } else if (x > 570){
             x = 0;
-        }else if (y < 30){
+        } else if (y < 30){
             y = 570;
         }else if (y > 570){
             y = 30;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "HeadObj{" +
+                "img=" + img +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
     }
 }
