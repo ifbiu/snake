@@ -26,6 +26,9 @@ public class GameWin extends JFrame {
     public int score = 0;
     //定义双缓存图片
     Image offScreenImage = null;
+
+    // 定义背景图
+    Image background = Toolkit.getDefaultToolkit().getImage("img/background.png");
     //窗口宽高
     int winWidth = 800;
     int winHeight = 600;
@@ -46,7 +49,7 @@ public class GameWin extends JFrame {
         //设置窗口的位置在屏幕上居中
         this.setLocationRelativeTo(null);
         //设置窗口的标题
-        this.setTitle("尚学堂贪吃蛇");
+        this.setTitle("别指望我们组版贪吃蛇");
 
         //蛇身体的初始化
         bodyObjList.add(new BodyObj(GameUtils.bodyImg,30,570,this));
@@ -120,6 +123,7 @@ public class GameWin extends JFrame {
         Graphics gImage = offScreenImage.getGraphics();
         //灰色背景
         gImage.setColor(Color.gray);
+        gImage.drawImage(background,0,0,winWidth,winHeight,this);
         gImage.fillRect(0,0,winWidth,winHeight);
         //网格线
         gImage.setColor(Color.black);
@@ -143,9 +147,10 @@ public class GameWin extends JFrame {
         //食物绘制
         foodObj.paintSelf(gImage);
         //关卡
-        GameUtils.drawWord(gImage,"第"+GameUtils.level+"关",Color.orange,40,650,260);
+        GameUtils.drawWord(gImage,"第"+GameUtils.level+"关",Color.orange,40,650,100);
         //分数绘制
-        GameUtils.drawWord(gImage,score + " 分",Color.BLUE,50,650,330);
+        GameUtils.drawWord(gImage,score + " 分",Color.BLUE,50,650,200);
+        GameUtils.drawWord(gImage,"by 王昊 田永杰 柳杨 武安祺 王晓云",Color.GREEN,10,620,580);
         //绘制提示语
         gImage.setColor(Color.gray);
         prompt(gImage);
@@ -168,15 +173,15 @@ public class GameWin extends JFrame {
         //失败
         if (state == 3){
             g.fillRect(120,240,400,70);
-            GameUtils.drawWord(g,"失败,按空格重新开始",Color.red,35,150,290);
+            GameUtils.drawWord(g,"本关挑战失败,按空格重新开始",Color.red,35,150,290);
         }
         //通关
         if (state == 4){
             g.fillRect(120,240,400,70);
             if (GameUtils.level == 3){
-                GameUtils.drawWord(g,"达成条件,游戏通关",Color.green,35,150,290);
+                GameUtils.drawWord(g,"❀恭喜游戏通关❀",Color.green,35,150,290);
             } else {
-                GameUtils.drawWord(g,"达成条件,空格下一关",Color.green,35,150,290);
+                GameUtils.drawWord(g,"本关挑战成功,空格进入下一关",Color.green,35,150,290);
             }
 
         }

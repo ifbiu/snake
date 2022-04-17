@@ -23,7 +23,7 @@ public class GameUtils {
     //绘制文字
     public static void drawWord(Graphics g,String str,Color color,int size,int x,int y){
         g.setColor(color);
-        g.setFont(new Font("仿宋",Font.BOLD,size));
+        g.setFont(new Font("宋体",Font.BOLD,size));
         g.drawString(str,x,y);
     }
 }
