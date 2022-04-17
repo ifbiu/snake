@@ -38,9 +38,10 @@ public class GameWin extends JFrame {
     //蛇的身体集合
     public List<BodyObj> bodyObjList = new ArrayList<>();
 
-    //食物
+    // 食物
     public FoodObj foodObj = new FoodObj().getFood();
 
+    // 启动
     public void launch(){
         //设置窗口是否可见
         this.setVisible(true);
@@ -158,7 +159,7 @@ public class GameWin extends JFrame {
         g.drawImage(offScreenImage,0,0,null);
     }
 
-    //绘制提示语
+    // 绘制提示语
     void prompt(Graphics g){
         //未开始
         if (state == 0){
@@ -189,7 +190,7 @@ public class GameWin extends JFrame {
     }
 
 
-    //游戏重置
+    // 游戏重置
     void resetGame(){
         //关闭当前窗口
         this.dispose();
