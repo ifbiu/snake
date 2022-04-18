@@ -117,9 +117,14 @@ public class HeadObj extends GameObj {
             //分数+1
             this.frame.score++;
         }
-        //通关判断
-        if (this.frame.score >= 3){
-            //通关
+        //通关条件设置
+        if (GameUtils.level==1 && this.frame.score >= 3){
+            GameWin.state = 4;
+        }
+        if (GameUtils.level==2 && this.frame.score >= 4){
+            GameWin.state = 4;
+        }
+        if (GameUtils.level==3 && this.frame.score >= 5){
             GameWin.state = 4;
         }
         move();

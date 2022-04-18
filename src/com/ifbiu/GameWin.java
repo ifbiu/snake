@@ -3,6 +3,7 @@ package com.ifbiu;
 import com.ifbiu.obj.BodyObj;
 import com.ifbiu.obj.FoodObj;
 import com.ifbiu.obj.HeadObj;
+import com.ifbiu.obj.SnakeObj;
 import com.ifbiu.utils.GameUtils;
 
 import javax.swing.*;
@@ -28,7 +29,7 @@ public class GameWin extends JFrame {
     Image offScreenImage = null;
 
     // 定义背景图
-    Image background = Toolkit.getDefaultToolkit().getImage("img/background.png");
+//    Image background = Toolkit.getDefaultToolkit().getImage("img/background.png");
     //窗口宽高
     int winWidth = 800;
     int winHeight = 600;
@@ -40,6 +41,9 @@ public class GameWin extends JFrame {
 
     // 食物
     public FoodObj foodObj = new FoodObj().getFood();
+
+    // 右侧蛇图
+    public SnakeObj snakeObj = new SnakeObj(GameUtils.snakeImg,640,240,this);
 
     // 启动
     public void launch(){
@@ -105,9 +109,21 @@ public class GameWin extends JFrame {
                 GameUtils.level++;
                 resetGame();
             }
+
+            int time = 450;
+            if (GameUtils.level==1){
+                time = 400;
+            }
+            if (GameUtils.level==2){
+                time = 300;
+            }
+            if (GameUtils.level==3){
+                time = 200;
+            }
+
             try {
                 //1秒1000毫秒
-                Thread.sleep(400);
+                Thread.sleep(time);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -123,11 +139,11 @@ public class GameWin extends JFrame {
         //获取图片对应的graphics对象
         Graphics gImage = offScreenImage.getGraphics();
         //灰色背景
-        gImage.setColor(Color.gray);
-        gImage.drawImage(background,0,0,winWidth,winHeight,this);
+        gImage.setColor(new Color(238, 236, 249));
+//        gImage.drawImage(background,0,0,winWidth,winHeight,this);
         gImage.fillRect(0,0,winWidth,winHeight);
         //网格线
-        gImage.setColor(Color.black);
+        gImage.setColor(new Color(214, 210, 238));
         //横线
         for (int i = 0; i <= 20 ; i++) {
             //横线
@@ -151,7 +167,9 @@ public class GameWin extends JFrame {
         GameUtils.drawWord(gImage,"第"+GameUtils.level+"关",Color.orange,40,650,100);
         //分数绘制
         GameUtils.drawWord(gImage,score + " 分",Color.BLUE,50,650,200);
-        GameUtils.drawWord(gImage,"by 王昊 田永杰 柳杨 武安祺 王晓云",Color.GREEN,10,620,580);
+        //右侧蛇图
+        snakeObj.paintSelf(gImage);
+        GameUtils.drawWord(gImage,"by 王昊 田永杰 柳杨 武安祺 王晓云",Color.red,10,620,580);
         //绘制提示语
         gImage.setColor(Color.gray);
         prompt(gImage);
@@ -174,15 +192,15 @@ public class GameWin extends JFrame {
         //失败
         if (state == 3){
             g.fillRect(120,240,400,70);
-            GameUtils.drawWord(g,"本关挑战失败,按空格重新开始",Color.red,35,150,290);
+            GameUtils.drawWord(g,"呜呜,按空格重新开始",Color.red,35,150,290);
         }
         //通关
         if (state == 4){
             g.fillRect(120,240,400,70);
             if (GameUtils.level == 3){
-                GameUtils.drawWord(g,"❀恭喜游戏通关❀",Color.green,35,150,290);
+                GameUtils.drawWord(g,"   ❀恭喜游戏通关❀",Color.green,35,150,290);
             } else {
-                GameUtils.drawWord(g,"本关挑战成功,空格进入下一关",Color.green,35,150,290);
+                GameUtils.drawWord(g,"真棒,空格进入下一关",Color.green,35,150,290);
             }
 
         }

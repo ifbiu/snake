@@ -18,6 +18,8 @@ public class GameUtils {
     public static Image bodyImg = Toolkit.getDefaultToolkit().getImage("img/body.png");
     //食物
     public static Image foodImg = Toolkit.getDefaultToolkit().getImage("img/food.png");
+    //右侧蛇图片
+    public static Image snakeImg = Toolkit.getDefaultToolkit().getImage("img/snake.png");
     //关卡
     public static int level = 1;
     //绘制文字
