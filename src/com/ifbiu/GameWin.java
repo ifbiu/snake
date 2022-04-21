@@ -6,10 +6,17 @@ import com.ifbiu.obj.HeadObj;
 import com.ifbiu.obj.SnakeObj;
 import com.ifbiu.utils.GameUtils;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
+import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +52,12 @@ public class GameWin extends JFrame {
     // 右侧蛇图
     public SnakeObj snakeObj = new SnakeObj(GameUtils.snakeImg,640,240,this);
 
+    // 背景音乐
+    File beijing = new File("music/beijing.wav");
+    File guale = new File("music/guale.wav");
+
     // 启动
-    public void launch(){
+    public void launch() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         //设置窗口是否可见
         this.setVisible(true);
         //设置窗口的大小
@@ -93,20 +104,27 @@ public class GameWin extends JFrame {
                 }
             }
         });
+        Clip beijingClip = musicLoopStart(beijing);
         while (true){
+            // 背景音乐
             if (state == 1){
+                beijingClip.start();
                 //游戏中才调用
                 repaint();
             }
             //失败重启
             if (state == 5){
                 state = 0;
+                beijingClip.close();
+                beijingClip.flush();
                 resetGame();
             }
             //通关下一关
             if (state == 6 && GameUtils.level != 3){
                 state = 1;
                 GameUtils.level++;
+                beijingClip.close();
+                beijingClip.flush();
                 resetGame();
             }
 
@@ -172,13 +190,21 @@ public class GameWin extends JFrame {
         GameUtils.drawWord(gImage,"by 王昊 田永杰 柳杨 武安祺 王晓云",Color.red,10,620,580);
         //绘制提示语
         gImage.setColor(Color.gray);
-        prompt(gImage);
+        try {
+            prompt(gImage);
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //将双缓存图片绘制到窗口中
         g.drawImage(offScreenImage,0,0,null);
     }
 
     // 绘制提示语
-    void prompt(Graphics g){
+    void prompt(Graphics g) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         //未开始
         if (state == 0){
             g.fillRect(120,240,400,70);
@@ -191,6 +217,8 @@ public class GameWin extends JFrame {
         }
         //失败
         if (state == 3){
+            Clip gualeClip = dieMusic(guale);
+            gualeClip.start();
             g.fillRect(120,240,400,70);
             GameUtils.drawWord(g,"呜呜,按空格重新开始",Color.red,35,150,290);
         }
@@ -209,7 +237,7 @@ public class GameWin extends JFrame {
 
 
     // 游戏重置
-    void resetGame(){
+    void resetGame() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         //关闭当前窗口
         this.dispose();
         //开启新窗口
@@ -217,7 +245,33 @@ public class GameWin extends JFrame {
         main(args);
     }
 
-    public static void main(String[] args) {
+    public Clip musicLoopStart(File file) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+            //创建相当于音乐播放器的对象
+            Clip clip = AudioSystem.getClip();
+            //将传入的文件转成可播放的文件
+            AudioInputStream audioInput = AudioSystem.getAudioInputStream(file);
+            //播放器打开这个文件
+            clip.open(audioInput);
+            //clip.start();//只播放一次
+            //循环播放
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            return clip;
+    }
+
+    public Clip dieMusic(File file) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+        //创建相当于音乐播放器的对象
+        Clip clip = AudioSystem.getClip();
+        //将传入的文件转成可播放的文件
+        AudioInputStream audioInput = AudioSystem.getAudioInputStream(file);
+        //播放器打开这个文件
+        clip.open(audioInput);
+//        clip.start();//只播放一次
+        //循环播放
+//        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        return clip;
+    }
+
+    public static void main(String[] args) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         GameWin gameWin = new GameWin();
         gameWin.launch();
     }
