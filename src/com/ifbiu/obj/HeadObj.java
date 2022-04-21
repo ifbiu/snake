@@ -6,6 +6,10 @@ import com.ifbiu.utils.GameUtils;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Candide
@@ -15,6 +19,7 @@ import java.awt.event.KeyEvent;
 public class HeadObj extends GameObj {
     //方向 up down left right
     private String direction = "right";
+    private ArrayList keyEventArr = new ArrayList();;
 
     public String getDirection() {
         return direction;
@@ -37,34 +42,71 @@ public class HeadObj extends GameObj {
 
     //控制移动方向  w -up  a - left   d -right  s-down
     public void changeDirection(KeyEvent e){
+        int node = 0;
+        if (keyEventArr.size()>=2){
+            node = (int) keyEventArr.get(keyEventArr.size()-2);
+        }
         switch (e.getKeyCode()){
             case KeyEvent.VK_A:
                 if (!"right".equals(direction)){
+                    try {
+                        if (node == KeyEvent.VK_D){
+                            TimeUnit.SECONDS.sleep(1);
+                        }
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
                     direction = "left";
                     img = GameUtils.leftImg;
+                    keyEventArr.add(KeyEvent.VK_A);
                 }
                 break;
             case KeyEvent.VK_D:
                 if (!"left".equals(direction)){
+                    try {
+                        if (node == KeyEvent.VK_A){
+                            TimeUnit.SECONDS.sleep(1);
+                        }
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
                     direction = "right";
                     img = GameUtils.rightImg;
+                    keyEventArr.add(KeyEvent.VK_D);
                 }
                 break;
             case KeyEvent.VK_W:
                 if (!"down".equals(direction)){
+                    try {
+                        if (node == KeyEvent.VK_S){
+                            TimeUnit.MILLISECONDS.sleep(50);
+                        }
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
                     direction = "up";
                     img = GameUtils.upImg;
+                    keyEventArr.add(KeyEvent.VK_W);
                 }
                 break;
             case KeyEvent.VK_S:
                 if (!"up".equals(direction)){
+                    try {
+                        if (node == KeyEvent.VK_W){
+                            TimeUnit.MILLISECONDS.sleep(50);
+                        }
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
                     direction = "down";
                     img = GameUtils.downImg;
+                    keyEventArr.add(KeyEvent.VK_S);
                 }
                 break;
             default:
                 break;
         }
+
     }
 
     //蛇的移动
