@@ -7,8 +7,6 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -19,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class HeadObj extends GameObj {
     //方向 up down left right
     private String direction = "right";
-    private ArrayList keyEventArr = new ArrayList();;
+    private final ArrayList<Integer> keyEventArr = new ArrayList<>();;
 
     public String getDirection() {
         return direction;
@@ -44,7 +42,7 @@ public class HeadObj extends GameObj {
     public void changeDirection(KeyEvent e){
         int node = 0;
         if (keyEventArr.size()>=2){
-            node = (int) keyEventArr.get(keyEventArr.size()-2);
+            node = keyEventArr.get(keyEventArr.size()-2);
         }
         switch (e.getKeyCode()){
             case KeyEvent.VK_A:
